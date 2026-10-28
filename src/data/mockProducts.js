@@ -3,7 +3,7 @@ export const initialProducts = [
   {
     id: 'prod-1',
     name: 'Dell Inspiron 15 Laptop',
-    subtitle: 'Intel i5 | 16GB RAM | 512GB SSD',
+    subtitle: 'Intel i5 | 16GB | 512GB SSD',
     category: 'Laptops & Accessories',
     categorySlug: 'laptops-accessories',
     brand: 'Dell',
@@ -37,7 +37,7 @@ export const initialProducts = [
   {
     id: 'prod-2',
     name: 'Nike Air Max Sneakers',
-    subtitle: "Men's Premium Running Shoes",
+    subtitle: "Men's Running Shoes",
     category: "Men's Fashion",
     categorySlug: 'mens-fashion',
     brand: 'Nike',
@@ -70,7 +70,7 @@ export const initialProducts = [
   {
     id: 'prod-3',
     name: 'boAt Wave Pro Smartwatch',
-    subtitle: '1.85" HD Display | Bluetooth Calling',
+    subtitle: '1.85" Display | Bluetooth Calling',
     category: 'Mobiles & Tablets',
     categorySlug: 'mobiles-tablets',
     brand: 'boAt',
@@ -101,7 +101,7 @@ export const initialProducts = [
   {
     id: 'prod-4',
     name: 'OnePlus Nord Buds 2',
-    subtitle: 'Active Noise Cancellation | Deep Bass',
+    subtitle: 'Active Noise Cancellation',
     category: 'Electronics',
     categorySlug: 'electronics',
     brand: 'OnePlus',
@@ -164,7 +164,7 @@ export const initialProducts = [
   {
     id: 'prod-6',
     name: 'Green Soul Office Chair',
-    subtitle: 'Ergonomic | Adjustable Lumbar',
+    subtitle: 'Ergonomic | Adjustable',
     category: 'Home & Living',
     categorySlug: 'home-living',
     brand: 'Green Soul',
@@ -212,8 +212,7 @@ export const initialProducts = [
     isRecommended: true,
     image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80'
     ],
     description: 'Forged in titanium and featuring the groundbreaking A17 Pro chip, a customizable Action button, and a more versatile Pro camera system with 48MP main sensor.',
     specs: {
@@ -225,7 +224,7 @@ export const initialProducts = [
   },
   {
     id: 'prod-8',
-    name: 'Sony WH-1000XM5 Wireless Headphones',
+    name: 'Sony WH-1000XM5 Headphones',
     subtitle: 'Industry Leading Noise Canceling',
     category: 'Electronics',
     categorySlug: 'electronics',
@@ -243,135 +242,12 @@ export const initialProducts = [
     isRecommended: true,
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80'
     ],
-    description: 'Two processors and 8 microphones for unprecedented noise cancellation and magnificent sound quality. Ultra-comfortable lightweight design with soft fit leather.',
+    description: 'Two processors and 8 microphones for unprecedented noise cancellation and magnificent sound quality.',
     specs: {
       BatteryLife: 'Up to 30 Hours with ANC On',
-      Codecs: 'LDAC, AAC, SBC',
-      Microphones: '4 Beamforming mics with AI noise suppression',
-      Weight: '250g'
-    }
-  },
-  {
-    id: 'prod-9',
-    name: 'Zara Silk Blend Evening Dress',
-    subtitle: "Women's Elegant Purple Gown",
-    category: "Women's Fashion",
-    categorySlug: 'womens-fashion',
-    brand: 'Zara',
-    price: 4590,
-    originalPrice: 6990,
-    discount: 34,
-    rating: 4.7,
-    reviewsCount: 412,
-    badge: 'Trending',
-    stock: 14,
-    isDeal: true,
-    isNew: true,
-    isBestSeller: false,
-    isRecommended: false,
-    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Flowing maxi silhouette crafted with lustrous mulberry silk blend, cowl neckline, and subtle side slit for an effortless evening presence.',
-    specs: {
-      Fabric: '80% Silk, 20% Viscose',
-      Care: 'Dry Clean Only',
-      Length: 'Maxi 135 cm',
-      Lining: '100% Breathable Rayon'
-    }
-  },
-  {
-    id: 'prod-10',
-    name: 'Modern Nordic Minimalist Sofa',
-    subtitle: '3-Seater Premium Velvet Cloud Blue',
-    category: 'Home & Living',
-    categorySlug: 'home-living',
-    brand: 'Urban Ladder',
-    price: 34999,
-    originalPrice: 48999,
-    discount: 29,
-    rating: 4.6,
-    reviewsCount: 319,
-    badge: 'Popular',
-    stock: 8,
-    isDeal: false,
-    isNew: false,
-    isBestSeller: false,
-    isRecommended: true,
-    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Contemporary Scandinavian 3-seater sofa wrapped in velvet upholstery with solid kiln-dried eucalyptus wood frame and brushed brass legs.',
-    specs: {
-      Dimensions: '210 x 88 x 85 cm',
-      SeatingCapacity: '3 Adults',
-      Frame: 'Kiln-Dried Solid Hardwood',
-      Foam: 'High Resilience 35 Density Foam'
-    }
-  },
-  {
-    id: 'prod-11',
-    name: 'Bowflex SelectTech Adjustable Dumbbell',
-    subtitle: 'Pair 2.5kg to 24kg Quick Dial',
-    category: 'Sports & Fitness',
-    categorySlug: 'sports-fitness',
-    brand: 'Bowflex',
-    price: 18499,
-    originalPrice: 24999,
-    discount: 26,
-    rating: 4.9,
-    reviewsCount: 742,
-    badge: 'Best Seller',
-    stock: 19,
-    isDeal: true,
-    isNew: false,
-    isBestSeller: true,
-    isRecommended: false,
-    image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Replaces 15 pairs of traditional weights with a unique quick-dial selection system. Durable molding around metal plates creates a smooth, quiet workout.',
-    specs: {
-      WeightRange: '2.5 to 24 kg per dumbbell',
-      WeightSettings: '15 incremental options',
-      Grip: 'Knurled textured ergonomic handle'
-    }
-  },
-  {
-    id: 'prod-12',
-    name: 'PlayStation 5 DualSense Wireless Controller',
-    subtitle: 'Cosmic Violet Edition | Haptic Feedback',
-    category: 'Toys & Games',
-    categorySlug: 'toys-games',
-    brand: 'Sony',
-    price: 5990,
-    originalPrice: 6990,
-    discount: 14,
-    rating: 4.8,
-    reviewsCount: 1530,
-    badge: 'Trending',
-    stock: 28,
-    isDeal: false,
-    isNew: true,
-    isBestSeller: true,
-    isRecommended: true,
-    image: 'https://images.unsplash.com/photo-1606318801954-d46846fe3ecd?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1606318801954-d46846fe3ecd?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Feel your in-game actions and environment simulated through haptic feedback and dynamic adaptive triggers. Built-in microphone and headset jack.',
-    specs: {
-      Connectivity: 'Bluetooth 5.1 & USB-C',
-      Battery: '1560 mAh Li-ion rechargeable',
-      Feedback: 'Dual actuators haptic feedback'
+      Codecs: 'LDAC, AAC, SBC'
     }
   }
 ];
