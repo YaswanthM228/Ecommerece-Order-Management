@@ -19,12 +19,12 @@ export const BrandsPage = () => {
   ];
 
   return (
-    <div className="max-w-[1440px] mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+    <div className="w-full px-6 sm:px-8 py-6 min-w-0 space-y-8">
       <div className="pb-4 border-b border-gray-200 dark:border-violet-900/30">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
           Featured Brand Partners
         </h1>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Explore genuine items backed by official brand warranty and guaranteed authenticity.
         </p>
       </div>
@@ -34,7 +34,7 @@ export const BrandsPage = () => {
           <Link
             key={b.name}
             to={`/products?q=${encodeURIComponent(b.name)}`}
-            className="group bg-white dark:bg-[#0E1433] rounded-3xl p-5 border border-gray-100 dark:border-violet-950/40 shadow-sm hover:shadow-card-hover transition-all flex flex-col justify-between"
+            className="group bg-white dark:bg-[#0E1433] rounded-3xl p-6 border border-gray-100 dark:border-violet-950/40 shadow-sm hover:shadow-card-hover transition-all flex flex-col justify-between"
           >
             <div className="aspect-video w-full rounded-2xl bg-gray-50 dark:bg-[#121940] overflow-hidden mb-4 p-2 flex items-center justify-center">
               <img
@@ -45,13 +45,13 @@ export const BrandsPage = () => {
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-extrabold text-base text-gray-900 dark:text-white group-hover:text-brand-violet transition-colors">
+                <h3 className="font-extrabold text-lg text-gray-900 dark:text-white group-hover:text-brand-violet transition-colors">
                   {b.name}
                 </h3>
-                <span className="text-xs text-gray-400">{b.category}</span>
+                <span className="text-sm text-gray-400">{b.category}</span>
               </div>
-              <span className="w-8 h-8 rounded-full bg-violet-50 dark:bg-violet-950/60 text-brand-violet flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                <ArrowRight className="w-4 h-4" />
+              <span className="w-9 h-9 rounded-full bg-violet-50 dark:bg-violet-950/60 text-brand-violet flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                <ArrowRight className="w-5 h-5" />
               </span>
             </div>
           </Link>

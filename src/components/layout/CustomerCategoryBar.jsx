@@ -34,10 +34,10 @@ export const CustomerCategoryBar = () => {
   ];
 
   return (
-    <nav className="bg-white dark:bg-[#0C1130] border-b border-gray-100 dark:border-violet-950/40 px-4 sm:px-6 py-2 transition-colors duration-200">
-      <div className="flex items-center justify-between gap-4 overflow-x-auto no-scrollbar text-xs">
+    <nav className="bg-white dark:bg-[#0C1130] border-b border-gray-100 dark:border-violet-950/40 px-6 sm:px-8 py-2.5 transition-colors duration-200">
+      <div className="flex items-center justify-between gap-6 overflow-x-auto no-scrollbar text-sm">
         {/* Category Links */}
-        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           {categoriesList.map((cat) => {
             const Icon = cat.icon;
             return (
@@ -46,14 +46,14 @@ export const CustomerCategoryBar = () => {
                 to={cat.slug === 'all' ? '/categories' : `/category/${cat.slug}`}
                 onClick={() => setSelectedCategory(cat.slug)}
                 className={({ isActive }) =>
-                  `flex items-center gap-1.5 px-3 py-1.5 rounded-full font-semibold transition-all whitespace-nowrap ${
+                  `flex items-center gap-2 px-3.5 py-1.5 rounded-full font-semibold transition-all whitespace-nowrap text-sm ${
                     isActive
-                      ? 'bg-violet-100 dark:bg-violet-950/70 text-brand-violet dark:text-violet-300 ring-1 ring-violet-500/30'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-brand-violet dark:hover:text-violet-300 hover:bg-gray-100 dark:hover:bg-white/5'
+                      ? 'bg-violet-100 dark:bg-violet-950 text-brand-violet dark:text-violet-300 ring-1 ring-violet-500/30'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-brand-violet dark:hover:text-violet-300 hover:bg-gray-100 dark:hover:bg-white/5'
                   }`
                 }
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className="w-4 h-4 shrink-0" />
                 <span>{cat.name}</span>
               </NavLink>
             );
@@ -61,12 +61,12 @@ export const CustomerCategoryBar = () => {
         </div>
 
         {/* Right Promotional Actions */}
-        <div className="hidden xl:flex items-center gap-3 shrink-0 pl-4 border-l border-gray-200 dark:border-violet-900/40 font-semibold">
+        <div className="hidden xl:flex items-center gap-4 shrink-0 pl-6 border-l border-gray-200 dark:border-violet-900/40 font-bold text-sm">
           <Link
             to="/deals"
             className="flex items-center gap-1.5 text-rose-500 hover:text-rose-600 dark:text-rose-400 hover:underline transition-colors"
           >
-            <Tag className="w-3.5 h-3.5" />
+            <Tag className="w-4 h-4" />
             <span>Offers</span>
           </Link>
 
@@ -74,7 +74,7 @@ export const CustomerCategoryBar = () => {
             to="/admin/login"
             className="flex items-center gap-1.5 text-violet-600 dark:text-violet-400 hover:underline transition-colors"
           >
-            <Store className="w-3.5 h-3.5" />
+            <Store className="w-4 h-4" />
             <span>Sell on ShopSphere</span>
           </Link>
 
@@ -82,7 +82,7 @@ export const CustomerCategoryBar = () => {
             to="/deals"
             className="flex items-center gap-1.5 text-amber-500 hover:text-amber-600 dark:text-amber-400 hover:underline transition-colors"
           >
-            <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+            <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
             <span>Deals</span>
           </Link>
         </div>
