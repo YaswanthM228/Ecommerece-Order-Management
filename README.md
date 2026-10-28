@@ -198,3 +198,4 @@ d:\Shop Sphere\
 1. **Frontend-Only Architecture**: All data operations (products CRUD, cart modifications, order placements, status toggles) run locally in-browser via React state and `localStorage`.
 2. **Demo Payment Gateways**: The UPI, Card, NetBanking, and COD payment options simulate realistic order placements; no actual monetary transactions or bank APIs are connected.
 3. **Admin Route Authorization**: Route guards for the Admin Portal are implemented client-side for demonstration and showcase purposes.
+"# Ecommerece-Order-Management" 
