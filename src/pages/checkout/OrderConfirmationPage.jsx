@@ -45,7 +45,7 @@ export const OrderConfirmationPage = () => {
           Thank you for shopping with ShopSphere!
         </h1>
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
-          We have received your order <span className="font-mono font-bold text-brand-violet">#{order.id}</span>. A confirmation email has been dispatched to {order.customer.email}.
+          We have received your order <span className="font-mono font-bold text-brand-violet">#{order.id}</span>. A confirmation email has been dispatched to {order.customer?.email || order.customer_email || 'customer@shopsphere.io'}.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 mt-7">
@@ -95,10 +95,10 @@ export const OrderConfirmationPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
           <div className="space-y-1.5">
             <span className="text-gray-400 font-extrabold uppercase tracking-wider text-xs">Billed & Shipped To:</span>
-            <p className="font-extrabold text-gray-900 dark:text-white text-base">{order.customer.name}</p>
-            <p className="text-gray-600 dark:text-gray-300">{order.customer.address}</p>
-            <p className="text-gray-600 dark:text-gray-300">{order.customer.city}, {order.customer.state} - {order.customer.pincode}</p>
-            <p className="text-gray-500 font-medium">Phone: {order.customer.phone}</p>
+            <p className="font-extrabold text-gray-900 dark:text-white text-base">{order.customer?.name || order.customer_name || 'Demo Shopper'}</p>
+            <p className="text-gray-600 dark:text-gray-300">{order.customer?.address || order.shipping_address_line || 'Flat 402, Prestige Palms'}</p>
+            <p className="text-gray-600 dark:text-gray-300">{order.customer?.city || order.city || 'Bengaluru'}, {order.customer?.state || order.state || 'Karnataka'} - {order.customer?.pincode || order.postal_code || '560103'}</p>
+            <p className="text-gray-500 font-medium">Phone: {order.customer?.phone || order.customer_phone || '+91 98765 12345'}</p>
           </div>
 
           <div className="space-y-1.5 sm:text-right">

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
   Mic,
@@ -28,12 +29,15 @@ export const CustomerToolbar = ({ onOpenSidebar }) => {
     searchQuery,
     setSearchQuery,
     selectedCategory,
-    setSelectedCategory
+    setSelectedCategory,
+    showToast,
+    setIsAIAssistantOpen
   } = useShop();
 
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [localSearch, setLocalSearch] = useState(searchQuery);
+  const [isListening, setIsListening] = useState(false);
 
   const categoryRef = useRef(null);
   const accountRef = useRef(null);
@@ -61,6 +65,49 @@ export const CustomerToolbar = ({ onOpenSidebar }) => {
     setSelectedCategory(catSlug);
     setCategoryDropdownOpen(false);
     navigate(catSlug === 'all' ? '/products' : `/category/${catSlug}`);
+  };
+
+  const handleVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      showToast('Speech recognition not available. Opening AI Assistant!', 'info');
+      setIsAIAssistantOpen(true);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        showToast('Listening... Speak now (e.g. "Smartphones" or "Shoes")', 'info');
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setLocalSearch(transcript);
+        setSearchQuery(transcript);
+        showToast(`Voice Search: "${transcript}"`);
+        navigate(`/products?q=${encodeURIComponent(transcript)}&cat=${selectedCategory}`);
+      };
+
+      recognition.onerror = () => {
+        setIsListening(false);
+        showToast('Could not hear voice input. Please try typing.', 'error');
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } catch {
+      setIsListening(false);
+      showToast('Voice search unavailable in current environment.', 'info');
+    }
   };
 
   const selectedCatLabel =
@@ -151,10 +198,15 @@ export const CustomerToolbar = ({ onOpenSidebar }) => {
           {/* Microphone Icon beside search button */}
           <button
             type="button"
-            title="Voice Search (Demo)"
-            className="flex items-center justify-center p-2 text-gray-400 hover:text-brand-violet transition-colors ml-1 shrink-0"
+            title={isListening ? "Listening..." : "Voice Search"}
+            onClick={handleVoiceSearch}
+            className={`flex items-center justify-center p-2 rounded-xl transition-all ml-1 shrink-0 ${
+              isListening
+                ? 'bg-rose-500/20 text-rose-500 animate-pulse'
+                : 'text-gray-400 hover:text-brand-violet hover:bg-gray-100 dark:hover:bg-white/5'
+            }`}
           >
-            <Mic className="w-4 h-4" />
+            <Mic className={`w-4 h-4 ${isListening ? 'animate-bounce' : ''}`} />
           </button>
         </form>
 
@@ -185,11 +237,20 @@ export const CustomerToolbar = ({ onOpenSidebar }) => {
           >
             <div className="relative">
               <ShoppingCart className="w-5 h-5" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2.5 bg-brand-violet text-white text-xs font-black px-1.5 py-0.2 rounded-full min-w-[20px] text-center shadow-md">
-                  {cartItemCount}
-                </span>
-              )}
+              <AnimatePresence>
+                {cartItemCount > 0 && (
+                  <motion.span
+                    key={cartItemCount}
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.5, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                    className="absolute -top-2 -right-2.5 bg-brand-violet text-white text-xs font-black px-1.5 py-0.2 rounded-full min-w-[20px] text-center shadow-md"
+                  >
+                    {cartItemCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </div>
             <div className="flex flex-col text-left">
               <span className="text-xs text-gray-500 dark:text-violet-300 font-medium leading-none">Cart</span>

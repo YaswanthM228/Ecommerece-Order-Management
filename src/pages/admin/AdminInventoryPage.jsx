@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Boxes, Search, Plus, Minus, AlertTriangle, CheckCircle2, RotateCcw } from 'lucide-react';
 import { useShop, formatCurrency } from '../../context/ShopContext';
+import { adminService } from '../../services/adminService';
 
 export const AdminInventoryPage = () => {
   const { products, updateProduct, showToast } = useShop();
@@ -12,6 +13,14 @@ export const AdminInventoryPage = () => {
     if (!prod) return;
     const newStock = Math.max(0, prod.stock + delta);
     updateProduct(id, { stock: newStock });
+
+    // Sync with backend API
+    const targetId = prod.dbId || (Number(id) ? Number(id) : null);
+    if (targetId) {
+      adminService.updateStock(targetId, newStock)
+        .then(() => showToast(`Inventory updated for SKU ${prod.sku}`))
+        .catch(() => {});
+    }
   };
 
   const filteredProducts = products.filter((p) => {

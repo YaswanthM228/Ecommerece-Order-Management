@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { useShop, formatCurrency } from '../../context/ShopContext';
 
@@ -10,14 +11,21 @@ export const ProductCard = ({ product, priority = false }) => {
   const badgeStyles = {
     'Best Seller': 'bg-[#F97316] text-white',
     'Limited Deal': 'bg-[#EF4444] text-white',
+    'Deal of the Day': 'bg-gradient-to-r from-rose-500 to-amber-500 text-white',
     'New': 'bg-[#4F46E5] text-white',
     'Trending': 'bg-[#F59E0B] text-white',
+    'Featured': 'bg-[#7C3AED] text-white',
     'Premium': 'bg-[#2563EB] text-white',
     'Popular': 'bg-[#E11D48] text-white',
+    'Bestseller': 'bg-[#F97316] text-white',
   };
 
   return (
-    <div className="group relative bg-white dark:bg-[#0E1433] rounded-3xl p-3.5 sm:p-4 border border-gray-100 dark:border-violet-950/40 shadow-sm hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between overflow-hidden min-w-0">
+    <motion.div
+      whileHover={{ y: -5 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+      className="group relative bg-white dark:bg-[#0E1433] rounded-3xl p-3.5 sm:p-4 border border-gray-100 dark:border-violet-950/40 shadow-sm hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between overflow-hidden min-w-0"
+    >
       {/* Media container */}
       <div className="relative aspect-square w-full rounded-2xl bg-gray-50/70 dark:bg-[#121940] overflow-hidden mb-3 flex items-center justify-center border border-gray-100/80 dark:border-violet-900/20">
         {/* Promotional Badge on Top-Left */}
@@ -32,7 +40,8 @@ export const ProductCard = ({ product, priority = false }) => {
         )}
 
         {/* Wishlist Heart Button on Top-Right */}
-        <button
+        <motion.button
+          whileTap={{ scale: 0.85 }}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -46,7 +55,7 @@ export const ProductCard = ({ product, priority = false }) => {
           }`}
         >
           <Heart className={`w-4 h-4 ${wishlisted ? 'fill-rose-500 stroke-rose-500' : ''}`} />
-        </button>
+        </motion.button>
 
         {/* Product Image */}
         <Link to={`/product/${product.id}`} className="w-full h-full flex items-center justify-center p-3">
@@ -106,14 +115,15 @@ export const ProductCard = ({ product, priority = false }) => {
         </div>
 
         {/* Add to Cart Button */}
-        <button
+        <motion.button
+          whileTap={{ scale: 0.95 }}
           onClick={() => addToCart(product)}
           className="w-full py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-violet-600/25 active:scale-[0.98] transition-all"
         >
           <ShoppingCart className="w-4 h-4" />
           <span>Add to Cart</span>
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };

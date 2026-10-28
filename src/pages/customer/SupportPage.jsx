@@ -3,7 +3,7 @@ import { HelpCircle, Mail, Phone, MessageSquare, ShieldCheck, ChevronDown, Send 
 import { useShop } from '../../context/ShopContext';
 
 export const SupportPage = () => {
-  const { showToast } = useShop();
+  const { showToast, setIsAIAssistantOpen } = useShop();
   const [openFaq, setOpenFaq] = useState(0);
   const [ticketSent, setTicketSent] = useState(false);
 
@@ -65,14 +65,17 @@ export const SupportPage = () => {
           <span className="text-xs text-gray-400 block">Avg. response: &lt; 2 hours</span>
         </div>
 
-        <div className="bg-white dark:bg-[#0E1433] rounded-3xl p-7 border border-gray-100 dark:border-violet-950/40 shadow-sm text-center space-y-3">
+        <button
+          onClick={() => setIsAIAssistantOpen(true)}
+          className="bg-white dark:bg-[#0E1433] rounded-3xl p-7 border border-gray-100 dark:border-violet-950/40 shadow-sm text-center space-y-3 hover:scale-105 transition-all text-left w-full group cursor-pointer"
+        >
           <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-500 flex items-center justify-center mx-auto">
             <MessageSquare className="w-7 h-7" />
           </div>
-          <h3 className="font-bold text-base text-gray-900 dark:text-white">AI Assistant</h3>
-          <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">Instant answers 24/7</p>
-          <span className="text-xs text-brand-violet font-bold block">Click Floating Icon</span>
-        </div>
+          <h3 className="font-bold text-base text-gray-900 dark:text-white text-center">AI Assistant</h3>
+          <p className="text-sm font-semibold text-gray-700 dark:text-gray-200 text-center">Instant answers 24/7</p>
+          <span className="text-xs text-brand-violet font-bold block text-center group-hover:underline">Click To Chat</span>
+        </button>
       </div>
 
       {/* FAQs */}

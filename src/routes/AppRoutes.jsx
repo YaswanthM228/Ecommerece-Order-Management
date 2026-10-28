@@ -12,11 +12,13 @@ import { ProductDetailPage } from '../pages/products/ProductDetailPage';
 import { CartPage } from '../pages/cart/CartPage';
 import { CheckoutPage } from '../pages/checkout/CheckoutPage';
 import { OrderConfirmationPage } from '../pages/checkout/OrderConfirmationPage';
+import { OrderDetailViewPage } from '../pages/customer/OrderDetailViewPage';
 import { WishlistPage } from '../pages/customer/WishlistPage';
 import { TrackOrderPage } from '../pages/customer/TrackOrderPage';
 import { VIPMembershipPage } from '../pages/customer/VIPMembershipPage';
 import { SupportPage } from '../pages/customer/SupportPage';
 import { BrandsPage } from '../pages/customer/BrandsPage';
+import { NotFoundPage } from '../pages/common/NotFoundPage';
 
 // Account Pages
 import { ProfilePage } from '../pages/account/ProfilePage';
@@ -43,12 +45,14 @@ import { AdminSettingsPage } from '../pages/admin/AdminSettingsPage';
 export const AppRoutes = () => {
   return (
     <Routes>
-      {/* Customer Storefront Routes */}
+      {/* Customer Storefront Routes (wrapped in CustomerLayout) */}
       <Route element={<CustomerLayout />}>
+        {/* Home & Catalog Collections */}
         <Route path="/" element={<HomePage />} />
         <Route path="/categories" element={<ProductListingPage />} />
         <Route path="/category/:categorySlug" element={<ProductListingPage />} />
         <Route path="/products" element={<ProductListingPage />} />
+        <Route path="/search" element={<ProductListingPage />} />
         <Route path="/deals" element={<ProductListingPage />} />
         <Route path="/new-arrivals" element={<ProductListingPage />} />
         <Route path="/best-sellers" element={<ProductListingPage />} />
@@ -56,20 +60,38 @@ export const AppRoutes = () => {
         <Route path="/gift-cards" element={<VIPMembershipPage />} />
         <Route path="/track-order" element={<TrackOrderPage />} />
         <Route path="/vip-membership" element={<VIPMembershipPage />} />
+        <Route path="/help" element={<SupportPage />} />
         <Route path="/support" element={<SupportPage />} />
 
-        {/* Product Details, Cart, Checkout */}
+        {/* Product Details (Support /product/:id and /products/:id and /products/slug/:slug) */}
         <Route path="/product/:productId" element={<ProductDetailPage />} />
+        <Route path="/products/:productId" element={<ProductDetailPage />} />
+        <Route path="/products/slug/:productId" element={<ProductDetailPage />} />
+
+        {/* Shopping Cart & Checkout */}
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
+
+        {/* Customer Orders & Invoices */}
+        <Route path="/orders" element={<OrdersHistoryPage />} />
+        <Route path="/orders/:orderId" element={<OrderDetailViewPage />} />
+        <Route path="/orders/:orderId/invoice" element={<OrderDetailViewPage />} />
+
+        {/* Wishlist */}
         <Route path="/wishlist" element={<WishlistPage />} />
 
-        {/* Account Routes */}
+        {/* Customer Account Sub-Routes */}
+        <Route path="/account" element={<ProfilePage />} />
         <Route path="/account/profile" element={<ProfilePage />} />
+        <Route path="/account/addresses" element={<ProfilePage />} />
         <Route path="/account/orders" element={<OrdersHistoryPage />} />
         <Route path="/account/notifications" element={<NotificationsPage />} />
         <Route path="/account/settings" element={<SettingsPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
+
+        {/* 404 Route within Customer Layout */}
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
 
       {/* Standalone Authentication Pages */}
@@ -78,7 +100,7 @@ export const AppRoutes = () => {
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
 
-      {/* Admin Portal Routes */}
+      {/* Admin Portal Protected Routes */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboardPage />} />
@@ -90,9 +112,8 @@ export const AppRoutes = () => {
         <Route path="reports" element={<AdminReportsPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />
       </Route>
-
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
+
+export default AppRoutes;

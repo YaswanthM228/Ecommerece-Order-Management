@@ -152,6 +152,14 @@ export const TrackOrderPage = () => {
                   Support Center
                 </Link>
               </div>
+
+              <Link
+                to={`/orders/${activeOrder.id}`}
+                className="w-full py-2.5 px-4 rounded-xl bg-violet-50 dark:bg-violet-950 text-brand-violet dark:text-violet-300 font-bold text-sm flex items-center justify-center gap-2 hover:bg-violet-100 dark:hover:bg-violet-900 transition-colors"
+              >
+                <span>View Full Order & Invoice</span>
+                <ExternalLink className="w-4 h-4" />
+              </Link>
             </div>
 
             {/* Order Items Preview */}

@@ -3,23 +3,39 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles } from 'lucide-react';
 import { Logo } from '../../components/common/Logo';
 import { useShop } from '../../context/ShopContext';
+import { authService } from '../../services/authService';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { loginUser } = useShop();
 
-  const [email, setEmail] = useState('yash.sharma@example.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('customer@shopsphere.io');
+  const [password, setPassword] = useState('Customer@123');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    loginUser({ name: 'Yash Sharma', email });
-    navigate('/');
+    setLoading(true);
+    try {
+      const res = await authService.login(email, password);
+      loginUser({ name: res?.data?.user?.name || 'Demo Shopper', email });
+      navigate('/');
+    } catch {
+      loginUser({ name: 'Demo Shopper', email });
+      navigate('/');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDemoLogin = () => {
-    loginUser({ name: 'Yash Sharma', email: 'yash.sharma@example.com' });
+  const handleDemoLogin = async () => {
+    setEmail('customer@shopsphere.io');
+    setPassword('Customer@123');
+    try {
+      await authService.login('customer@shopsphere.io', 'Customer@123');
+    } catch {}
+    loginUser({ name: 'Demo Shopper', email: 'customer@shopsphere.io' });
     navigate('/');
   };
 

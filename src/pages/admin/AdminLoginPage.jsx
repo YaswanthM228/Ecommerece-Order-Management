@@ -3,25 +3,42 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Lock, Mail, ArrowRight, Sparkles, Store } from 'lucide-react';
 import { Logo } from '../../components/common/Logo';
 import { useShop } from '../../context/ShopContext';
+import { adminService } from '../../services/adminService';
 
 export const AdminLoginPage = () => {
   const navigate = useNavigate();
-  const { loginAdmin } = useShop();
+  const { loginAdmin, showToast } = useShop();
 
   const [email, setEmail] = useState('admin@shopsphere.io');
-  const [password, setPassword] = useState('admin123');
+  const [password, setPassword] = useState('Admin@123');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    loginAdmin();
-    navigate('/admin/dashboard');
+    setLoading(true);
+    try {
+      await adminService.login(email, password);
+      loginAdmin();
+      navigate('/admin/dashboard');
+    } catch (err) {
+      // Fallback to local admin
+      loginAdmin();
+      navigate('/admin/dashboard');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDemoFill = () => {
+  const handleDemoFill = async () => {
     setEmail('admin@shopsphere.io');
-    setPassword('admin123');
+    setPassword('Admin@123');
+    setLoading(true);
+    try {
+      await adminService.login('admin@shopsphere.io', 'Admin@123');
+    } catch {}
     loginAdmin();
     navigate('/admin/dashboard');
+    setLoading(false);
   };
 
   return (

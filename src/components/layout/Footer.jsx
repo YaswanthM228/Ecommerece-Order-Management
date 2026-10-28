@@ -27,18 +27,42 @@ export const Footer = () => {
               ShopSphere is your destination for next-gen technology, premium fashion, and elevated living essentials. Designed for smarter living and bigger possibilities.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all cursor-pointer font-bold">
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noreferrer"
+                title="Follow ShopSphere on X"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all font-bold"
+              >
                 𝕏
-              </span>
-              <span className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all cursor-pointer font-bold">
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                title="ShopSphere on LinkedIn"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all font-bold"
+              >
                 in
-              </span>
-              <span className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all cursor-pointer font-bold">
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                title="Follow ShopSphere on Instagram"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all font-bold"
+              >
                 ig
-              </span>
-              <span className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all cursor-pointer font-bold">
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noreferrer"
+                title="ShopSphere on Facebook"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-violet-900/40 flex items-center justify-center text-gray-300 hover:text-white hover:bg-violet-600 transition-all font-bold"
+              >
                 fb
-              </span>
+              </a>
             </div>
           </div>
 
@@ -46,9 +70,9 @@ export const Footer = () => {
           <div className="space-y-3.5">
             <h4 className="text-sm sm:text-base font-bold text-white uppercase tracking-wider">Shopping</h4>
             <ul className="space-y-2.5 text-sm">
-              <li><Link to="/category/electronics" className="hover:text-white transition-colors">Electronics & Gadgets</Link></li>
+              <li><Link to="/category/mobiles-tablets" className="hover:text-white transition-colors">Mobiles & Tablets</Link></li>
+              <li><Link to="/category/laptops-accessories" className="hover:text-white transition-colors">Laptops & Gadgets</Link></li>
               <li><Link to="/category/mens-fashion" className="hover:text-white transition-colors">Men's & Women's Fashion</Link></li>
-              <li><Link to="/category/home-living" className="hover:text-white transition-colors">Home & Living</Link></li>
               <li><Link to="/deals" className="hover:text-white transition-colors">Today's Deals</Link></li>
               <li><Link to="/vip-membership" className="hover:text-white transition-colors">VIP Membership</Link></li>
             </ul>
@@ -60,8 +84,8 @@ export const Footer = () => {
             <ul className="space-y-2.5 text-sm">
               <li><Link to="/support" className="hover:text-white transition-colors">Help Center & FAQ</Link></li>
               <li><Link to="/track-order" className="hover:text-white transition-colors">Track Your Order</Link></li>
-              <li><Link to="/support" className="hover:text-white transition-colors">Returns & Refunds</Link></li>
-              <li><Link to="/support" className="hover:text-white transition-colors">Shipping Policies</Link></li>
+              <li><Link to="/orders" className="hover:text-white transition-colors">Orders & Invoices</Link></li>
+              <li><Link to="/support" className="hover:text-white transition-colors">Returns & Shipping Policies</Link></li>
               <li><Link to="/admin/dashboard" className="text-violet-400 hover:text-violet-300 font-bold transition-colors">Admin Portal Demo</Link></li>
             </ul>
           </div>

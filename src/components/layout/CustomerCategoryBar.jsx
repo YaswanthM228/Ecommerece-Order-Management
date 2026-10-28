@@ -1,10 +1,12 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
+  Smartphone,
   Laptop,
   Shirt,
-  Armchair,
   Sparkles,
+  Armchair,
+  Heart,
   Dumbbell,
   BookOpen,
   Gamepad2,
@@ -12,7 +14,6 @@ import {
   Car,
   MoreHorizontal,
   Tag,
-  Store,
   Flame
 } from 'lucide-react';
 import { useShop } from '../../context/ShopContext';
@@ -21,16 +22,18 @@ export const CustomerCategoryBar = () => {
   const { setSelectedCategory } = useShop();
 
   const categoriesList = [
-    { name: 'Electronics', slug: 'electronics', icon: Laptop },
-    { name: 'Fashion', slug: 'mens-fashion', icon: Shirt },
+    { name: 'Mobiles', slug: 'mobiles-tablets', icon: Smartphone },
+    { name: 'Laptops', slug: 'laptops-accessories', icon: Laptop },
+    { name: "Men's Fashion", slug: 'mens-fashion', icon: Shirt },
+    { name: "Women's Fashion", slug: 'womens-fashion', icon: Sparkles },
     { name: 'Home & Living', slug: 'home-living', icon: Armchair },
-    { name: 'Beauty', slug: 'beauty-personal-care', icon: Sparkles },
+    { name: 'Beauty', slug: 'beauty-personal-care', icon: Heart },
     { name: 'Sports', slug: 'sports-fitness', icon: Dumbbell },
     { name: 'Books', slug: 'books-stationery', icon: BookOpen },
-    { name: 'Toys', slug: 'toys-games', icon: Gamepad2 },
+    { name: 'Toys & Games', slug: 'toys-games', icon: Gamepad2 },
     { name: 'Grocery', slug: 'grocery-essentials', icon: ShoppingBag },
     { name: 'Automotive', slug: 'automotive', icon: Car },
-    { name: 'More', slug: 'all', icon: MoreHorizontal },
+    { name: 'All Categories', slug: 'all', icon: MoreHorizontal },
   ];
 
   return (
@@ -46,45 +49,36 @@ export const CustomerCategoryBar = () => {
                 to={cat.slug === 'all' ? '/categories' : `/category/${cat.slug}`}
                 onClick={() => setSelectedCategory(cat.slug)}
                 className={({ isActive }) =>
-                  `flex items-center gap-2 px-3.5 py-1.5 rounded-full font-semibold transition-all whitespace-nowrap text-sm ${
+                  `flex items-center gap-2 px-3 py-1.5 rounded-full font-semibold transition-all whitespace-nowrap text-xs sm:text-sm ${
                     isActive
                       ? 'bg-violet-100 dark:bg-violet-950 text-brand-violet dark:text-violet-300 ring-1 ring-violet-500/30'
                       : 'text-gray-700 dark:text-gray-300 hover:text-brand-violet dark:hover:text-violet-300 hover:bg-gray-100 dark:hover:bg-white/5'
                   }`
                 }
               >
-                <Icon className="w-4 h-4 shrink-0" />
+                <Icon className="w-3.5 h-3.5 shrink-0 text-brand-violet/80 dark:text-violet-400" />
                 <span>{cat.name}</span>
               </NavLink>
             );
           })}
         </div>
 
-        {/* Right Promotional Actions */}
-        <div className="hidden xl:flex items-center gap-4 shrink-0 pl-6 border-l border-gray-200 dark:border-violet-900/40 font-bold text-sm">
-          <Link
+        {/* Quick Highlights: Today's Deals & Flash Sale */}
+        <div className="hidden xl:flex items-center gap-4 shrink-0 pl-4 border-l border-gray-200 dark:border-violet-900/30">
+          <NavLink
             to="/deals"
-            className="flex items-center gap-1.5 text-rose-500 hover:text-rose-600 dark:text-rose-400 hover:underline transition-colors"
+            className="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-500 transition-colors whitespace-nowrap"
           >
-            <Tag className="w-4 h-4" />
-            <span>Offers</span>
-          </Link>
-
-          <Link
-            to="/admin/login"
-            className="flex items-center gap-1.5 text-violet-600 dark:text-violet-400 hover:underline transition-colors"
+            <Flame className="w-3.5 h-3.5 fill-amber-500 text-amber-500 animate-pulse" />
+            <span>Today's Deals</span>
+          </NavLink>
+          <NavLink
+            to="/products?discount=true"
+            className="flex items-center gap-1.5 text-xs font-bold text-brand-violet dark:text-violet-400 hover:text-violet-300 transition-colors whitespace-nowrap"
           >
-            <Store className="w-4 h-4" />
-            <span>Sell on ShopSphere</span>
-          </Link>
-
-          <Link
-            to="/deals"
-            className="flex items-center gap-1.5 text-amber-500 hover:text-amber-600 dark:text-amber-400 hover:underline transition-colors"
-          >
-            <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
-            <span>Deals</span>
-          </Link>
+            <Tag className="w-3.5 h-3.5" />
+            <span>Extra 20% Off</span>
+          </NavLink>
         </div>
       </div>
     </nav>

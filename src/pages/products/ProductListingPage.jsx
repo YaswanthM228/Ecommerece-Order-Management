@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { useSearchParams, Link, useParams } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams, Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 import {
   Filter,
   Grid,
@@ -10,64 +10,105 @@ import {
   SlidersHorizontal,
   RotateCcw,
   ShoppingCart,
-  Heart
+  Heart,
+  ArrowLeft,
+  Flame,
+  Sparkles,
+  TrendingUp
 } from 'lucide-react';
 import { useShop, formatCurrency } from '../../context/ShopContext';
 import { ProductCard } from '../../components/products/ProductCard';
-import { categories } from '../../data/mockCategories';
 
 export const ProductListingPage = () => {
   const { categorySlug } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryParam = searchParams.get('q') || '';
-  const catParam = categorySlug || searchParams.get('cat') || 'all';
 
-  const { products, addToCart, toggleWishlist, isInWishlist } = useShop();
+  const queryParam = searchParams.get('q') || searchParams.get('query') || '';
+  const initialCat = categorySlug || searchParams.get('category') || searchParams.get('cat') || 'all';
 
-  const [selectedCategory, setSelectedCategory] = useState(catParam);
+  const { products, categories, addToCart, toggleWishlist, isInWishlist } = useShop();
+
+  // Mode detection based on pathname
+  const isDealsRoute = location.pathname.includes('/deals') || searchParams.get('deal') === 'true';
+  const isNewArrivalsRoute = location.pathname.includes('/new-arrivals');
+  const isBestSellersRoute = location.pathname.includes('/best-sellers');
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCat);
   const [selectedBrand, setSelectedBrand] = useState('all');
   const [minRating, setMinRating] = useState(0);
-  const [priceRange, setPriceRange] = useState(150000);
+  const [priceRange, setPriceRange] = useState(350000);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState('featured');
   const [viewMode, setViewMode] = useState('grid');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
+  // Sync state whenever URL or route changes
+  useEffect(() => {
+    const nextCat = categorySlug || searchParams.get('category') || searchParams.get('cat') || 'all';
+    setSelectedCategory(nextCat);
+  }, [categorySlug, searchParams, location.pathname]);
+
   const brands = useMemo(() => {
     const list = Array.from(new Set(products.map((p) => p.brand).filter(Boolean)));
-    return ['all', ...list];
+    return ['all', ...list.sort()];
   }, [products]);
 
   const filteredProducts = useMemo(() => {
     return products
       .filter((p) => {
+        // Search text matching
         if (queryParam) {
           const matchQuery =
             p.name.toLowerCase().includes(queryParam.toLowerCase()) ||
-            p.category.toLowerCase().includes(queryParam.toLowerCase()) ||
-            p.brand.toLowerCase().includes(queryParam.toLowerCase()) ||
-            p.description.toLowerCase().includes(queryParam.toLowerCase());
+            (p.category && p.category.toLowerCase().includes(queryParam.toLowerCase())) ||
+            (p.brand && p.brand.toLowerCase().includes(queryParam.toLowerCase())) ||
+            (p.description && p.description.toLowerCase().includes(queryParam.toLowerCase())) ||
+            (p.sku && p.sku.toLowerCase().includes(queryParam.toLowerCase()));
           if (!matchQuery) return false;
         }
 
+        // Special collection routes
+        if (isDealsRoute && !p.isDeal) return false;
+        if (isNewArrivalsRoute && !p.isNew) return false;
+        if (isBestSellersRoute && !p.isBestSeller) return false;
+        if (searchParams.get('discount') === 'true' && (!p.discount || p.discount < 10)) return false;
+
+        // Category filter
         if (selectedCategory !== 'all') {
-          if (p.categorySlug !== selectedCategory && p.category.toLowerCase() !== selectedCategory.toLowerCase()) {
-            return false;
+          const targetSlug = selectedCategory.toLowerCase();
+          // Support alias "electronics" -> mobiles or laptops
+          if (targetSlug === 'electronics') {
+            if (p.categorySlug !== 'mobiles-tablets' && p.categorySlug !== 'laptops-accessories') {
+              return false;
+            }
+          } else {
+            const matchesSlug = p.categorySlug && p.categorySlug.toLowerCase() === targetSlug;
+            const matchesName = p.category && p.category.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-') === targetSlug;
+            const matchesExact = p.category && p.category.toLowerCase() === targetSlug;
+            if (!matchesSlug && !matchesName && !matchesExact) {
+              return false;
+            }
           }
         }
 
+        // Brand filter
         if (selectedBrand !== 'all' && p.brand !== selectedBrand) {
           return false;
         }
 
+        // Minimum rating
         if (minRating > 0 && p.rating < minRating) {
           return false;
         }
 
+        // Price ceiling
         if (p.price > priceRange) {
           return false;
         }
 
+        // Stock availability
         if (inStockOnly && p.stock <= 0) {
           return false;
         }
@@ -81,16 +122,42 @@ export const ProductListingPage = () => {
         if (sortBy === 'newest') return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0);
         return 0;
       });
-  }, [products, queryParam, selectedCategory, selectedBrand, minRating, priceRange, inStockOnly, sortBy]);
+  }, [
+    products,
+    queryParam,
+    selectedCategory,
+    selectedBrand,
+    minRating,
+    priceRange,
+    inStockOnly,
+    sortBy,
+    isDealsRoute,
+    isNewArrivalsRoute,
+    isBestSellersRoute
+  ]);
 
   const clearFilters = () => {
     setSelectedCategory('all');
     setSelectedBrand('all');
     setMinRating(0);
-    setPriceRange(150000);
+    setPriceRange(350000);
     setInStockOnly(false);
     setSortBy('featured');
     setSearchParams({});
+    if (categorySlug) {
+      navigate('/products');
+    }
+  };
+
+  const getPageHeaderTitle = () => {
+    if (queryParam) return `Search Results for "${queryParam}"`;
+    if (isDealsRoute) return "Today's Exclusive Deals";
+    if (searchParams.get('discount') === 'true') return 'Special Discount Offers';
+    if (isNewArrivalsRoute) return 'New Arrivals & Fresh Drops';
+    if (isBestSellersRoute) return 'Best Selling Products';
+    if (selectedCategory === 'all') return 'All Products Catalog';
+    const foundCat = categories.find((c) => c.slug === selectedCategory);
+    return foundCat ? foundCat.name : selectedCategory.replace(/-/g, ' ');
   };
 
   const currentCategoryName =
@@ -255,16 +322,15 @@ export const ProductListingPage = () => {
         <Link to="/" className="hover:text-brand-violet">Home</Link>
         <span>/</span>
         <span className="text-gray-900 dark:text-white font-bold">
-          {currentCategoryName}
+          {getPageHeaderTitle()}
         </span>
-        {queryParam && <span>(Search: "{queryParam}")</span>}
       </nav>
 
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-200 dark:border-violet-900/30">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white">
-            {currentCategoryName}
+            {getPageHeaderTitle()}
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
             Showing <span className="font-bold text-brand-violet">{filteredProducts.length}</span> curated products

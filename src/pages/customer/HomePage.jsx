@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,35 +15,35 @@ import {
   Sparkles,
   TrendingUp,
   Heart,
-  Check
+  Check,
+  Database
 } from 'lucide-react';
 import { ProductCard } from '../../components/products/ProductCard';
 import { CategoryTile } from '../../components/products/CategoryTile';
 import { CountdownTimer } from '../../components/products/CountdownTimer';
 import { useShop } from '../../context/ShopContext';
-import { categories } from '../../data/mockCategories';
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { products, setSelectedCategory } = useShop();
+  const { products, categories, setSelectedCategory, isApiOnline } = useShop();
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const heroSlides = [
     {
       badge: 'NEXT GEN TECH',
       headlinePart1: 'Upgrade',
       headlinePart2: 'Your World',
-      subline: 'Latest Gadgets. Smarter Living. Bigger Possibilities.',
+      subline: 'Latest Flagships. Smarter Living. Bigger Possibilities.',
       cta: 'Shop Electronics',
-      category: 'electronics',
+      category: 'mobiles-tablets',
       discount: '50%',
       laptopImg: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80',
       phoneImg: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=500&q=80',
       watchImg: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=400&q=80',
       headphonesImg: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=500&q=80',
-      earbudsImg: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80',
-      brands: ['Apple', 'Samsung', 'OnePlus', 'boAt', 'JBL']
+      brands: ['Apple', 'Samsung', 'OnePlus', 'Dell', 'Sony']
     },
     {
       badge: 'FESTIVAL OF FASHION',
@@ -56,10 +57,18 @@ export const HomePage = () => {
       phoneImg: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=500&q=80',
       watchImg: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
       headphonesImg: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80',
-      earbudsImg: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=400&q=80',
-      brands: ['Nike', 'Zara', 'Puma', 'Levis', 'H&M']
+      brands: ['Nike', 'Raymond', 'Levi’s', 'Zara', 'Titan']
     }
   ];
+
+  // Auto-advance hero slides with pause on hover
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [isPaused, heroSlides.length]);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
@@ -74,7 +83,11 @@ export const HomePage = () => {
       {/* 1. Hero & Side Banners Grid (Uses 100% available desktop width) */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
         {/* Main Hero Banner (Col 8 / approx 68%) */}
-        <div className="lg:col-span-8 rounded-3xl overflow-hidden relative min-h-[460px] sm:min-h-[500px] bg-gradient-to-br from-[#090D26] via-[#140E3E] to-[#2B1059] text-white p-7 sm:p-11 flex flex-col justify-between shadow-2xl border border-violet-900/40 group">
+        <div
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className="lg:col-span-8 rounded-3xl overflow-hidden relative min-h-[460px] sm:min-h-[500px] bg-gradient-to-br from-[#090D26] via-[#140E3E] to-[#2B1059] text-white p-7 sm:p-11 flex flex-col justify-between shadow-2xl border border-violet-900/40 group"
+        >
           {/* Cosmic Aura & Neon Light Rings in background */}
           <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-violet-600/30 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-10 right-10 w-80 h-80 bg-indigo-500/25 rounded-full blur-2xl pointer-events-none" />
@@ -277,55 +290,55 @@ export const HomePage = () => {
       {/* 2. Service Benefits Strip */}
       <section className="bg-white dark:bg-[#0E1433] rounded-3xl p-5 sm:p-6 border border-gray-100 dark:border-violet-950/40 shadow-sm">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-5 divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-violet-950/40 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start gap-4 px-4 py-1">
-            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0">
+          <Link to="/support" className="flex items-center justify-center md:justify-start gap-4 px-4 py-1 hover:opacity-85 transition-opacity group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <Truck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white">Free Shipping</h4>
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand-violet transition-colors">Free Shipping</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">On Orders Above ₹999</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="flex items-center justify-center md:justify-start gap-4 px-4 py-1">
-            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0">
+          <Link to="/support" className="flex items-center justify-center md:justify-start gap-4 px-4 py-1 hover:opacity-85 transition-opacity group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <RotateCcw className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white">Easy Returns</h4>
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand-violet transition-colors">Easy Returns</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Within 7 Days</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="flex items-center justify-center md:justify-start gap-4 px-4 py-1">
-            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0">
+          <Link to="/support" className="flex items-center justify-center md:justify-start gap-4 px-4 py-1 hover:opacity-85 transition-opacity group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white">Secure Payment</h4>
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand-violet transition-colors">Secure Payment</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">100% Safe & Secure</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="flex items-center justify-center md:justify-start gap-4 px-4 py-1">
-            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0">
+          <Link to="/support" className="flex items-center justify-center md:justify-start gap-4 px-4 py-1 hover:opacity-85 transition-opacity group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <Headphones className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white">24/7 Support</h4>
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand-violet transition-colors">24/7 Support</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">We're Here for You</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="flex items-center justify-center md:justify-start gap-4 px-4 py-1">
-            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0">
+          <Link to="/deals" className="flex items-center justify-center md:justify-start gap-4 px-4 py-1 hover:opacity-85 transition-opacity group">
+            <div className="w-12 h-12 rounded-2xl bg-violet-50 dark:bg-violet-950/60 text-brand-violet dark:text-violet-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <Tag className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white">Best Offers</h4>
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand-violet transition-colors">Best Offers</h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">On Top Brands</p>
             </div>
-          </div>
+          </Link>
         </div>
       </section>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   Star,
@@ -13,22 +13,52 @@ import {
   Share2,
   ChevronRight,
   MessageSquare,
-  ThumbsUp
+  ThumbsUp,
+  ArrowLeft
 } from 'lucide-react';
 import { useShop, formatCurrency } from '../../context/ShopContext';
 import { ProductCard } from '../../components/products/ProductCard';
 
 export const ProductDetailPage = () => {
-  const { productId } = useParams();
+  const { productId, id } = useParams();
+  const paramId = productId || id;
   const navigate = useNavigate();
   const { products, addToCart, toggleWishlist, isInWishlist, showToast } = useShop();
 
-  const product = products.find((p) => p.id === productId) || products[0];
+  const product = useMemo(() => {
+    if (!paramId || !products.length) return products[0] || null;
+    const match = products.find(
+      (p) =>
+        String(p.id) === String(paramId) ||
+        String(p.dbId) === String(paramId) ||
+        p.slug === paramId ||
+        p.sku === paramId
+    );
+    return match || products[0];
+  }, [products, paramId]);
+
   const [selectedImage, setSelectedImage] = useState(product?.image);
   const [quantity, setQuantity] = useState(1);
   const [pincode, setPincode] = useState('');
   const [pincodeMessage, setPincodeMessage] = useState(null);
   const [activeTab, setActiveTab] = useState('specs');
+
+  useEffect(() => {
+    if (product?.image) {
+      setSelectedImage(product.image);
+    }
+  }, [product?.id, product?.image]);
+
+  if (!product) {
+    return (
+      <div className="w-full px-6 py-20 text-center">
+        <p className="text-gray-500 mb-4">Loading product catalog...</p>
+        <Link to="/products" className="text-brand-violet font-bold underline">
+          Browse Products
+        </Link>
+      </div>
+    );
+  }
 
   const wishlisted = isInWishlist(product.id);
 
@@ -61,18 +91,27 @@ export const ProductDetailPage = () => {
 
   return (
     <div className="w-full px-6 sm:px-8 py-6 sm:py-8 space-y-10 min-w-0">
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
-        <Link to="/" className="hover:text-brand-violet">Home</Link>
-        <ChevronRight className="w-4 h-4" />
-        <Link to={`/category/${product.categorySlug}`} className="hover:text-brand-violet">
-          {product.category}
-        </Link>
-        <ChevronRight className="w-4 h-4" />
-        <span className="text-gray-900 dark:text-white font-bold truncate max-w-sm">
-          {product.name}
-        </span>
-      </nav>
+      {/* Breadcrumbs & Back Button */}
+      <div className="flex items-center justify-between gap-4">
+        <nav className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium overflow-x-auto no-scrollbar">
+          <Link to="/" className="hover:text-brand-violet">Home</Link>
+          <ChevronRight className="w-4 h-4 shrink-0" />
+          <Link to={`/category/${product.categorySlug || 'mobiles-tablets'}`} className="hover:text-brand-violet whitespace-nowrap">
+            {product.category || 'Category'}
+          </Link>
+          <ChevronRight className="w-4 h-4 shrink-0" />
+          <span className="text-gray-900 dark:text-white font-bold truncate max-w-sm">
+            {product.name}
+          </span>
+        </nav>
+        <button
+          onClick={() => navigate(-1)}
+          className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 text-xs font-bold text-gray-700 dark:text-gray-300 transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back</span>
+        </button>
+      </div>
 
       {/* Main Product Overview Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
